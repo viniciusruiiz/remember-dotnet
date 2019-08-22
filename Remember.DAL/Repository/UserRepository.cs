@@ -37,16 +37,19 @@ namespace Remember.DAL.Repository
             return entity;
         }
 
-        public User GetRandomUser()
+        public User GetRandom()
         {
             User entity;
 
-            //using (ISession session = SessionFactory.OpenSession())
-            //{
-            //    entity = session.Get<User>(id);
-            //}
+            using (ISession session = SessionFactory.OpenSession())
+            {
+                entity = session.QueryOver<User>()
+                    .OrderByRandom()
+                    .Take(1)
+                    .SingleOrDefault();
+            }
 
-            return null;
+            return entity;
         }
 
         public User Insert(User entity)

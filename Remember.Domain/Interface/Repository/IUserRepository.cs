@@ -15,6 +15,6 @@ namespace Remember.Domain.Interface.Repository
 
         User Disable(User entity);
 
-        User GetRandomUser();
+        User GetRandom();
     }
 }
