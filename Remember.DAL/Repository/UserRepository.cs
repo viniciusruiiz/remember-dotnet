@@ -19,7 +19,7 @@ namespace Remember.DAL.Repository
 
                 session.Update(entity);
 
-                Dispose(transaction);
+                transaction.Dispose();
             }
 
             return entity;
@@ -59,7 +59,7 @@ namespace Remember.DAL.Repository
             {
                 session.Save(entity);
 
-                Dispose(transaction);
+                transaction.Dispose();
             }
 
             return entity;
@@ -72,16 +72,10 @@ namespace Remember.DAL.Repository
             {
                 session.Update(entity);
 
-                Dispose(transaction);
+                transaction.Dispose();
             }
 
             return entity;
-        }
-
-        private void Dispose(ITransaction transaction)
-        {
-            transaction.Commit();
-            transaction.Dispose();
         }
     }
 }
