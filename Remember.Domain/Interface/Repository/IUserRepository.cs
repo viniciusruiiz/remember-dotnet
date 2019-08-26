@@ -9,6 +9,8 @@ namespace Remember.Domain.Interface.Repository
     {
         User Get(Guid id);
 
+        User GetByEmail(string email);
+
         User Insert(User entity);
 
         User Update(User entity);

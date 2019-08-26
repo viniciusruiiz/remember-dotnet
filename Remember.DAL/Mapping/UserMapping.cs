@@ -1,8 +1,5 @@
 ﻿using FluentNHibernate.Mapping;
 using Remember.Domain.Entity;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Remember.DAL.Mapping
 {
@@ -16,7 +13,7 @@ namespace Remember.DAL.Mapping
             Map(m => m.Email).Length(120).Not.Nullable().Unique().Column("USU_EML");
             Map(m => m.Password).Column("USU_PWD");
             Map(m => m.Name).Length(60).Column("USU_NAM");
-            Map(m => m.Gender).Check("male").Length(6).Column("USU_GND"); 
+            Map(m => m.Gender).Column("USU_GND"); 
             Map(m => m.BirthDate).Column("USU_BDT");
             Map(m => m.IsActive).Column("USU_ACT");
             Map(m => m.CreatedAt).Column("USU_CAT");

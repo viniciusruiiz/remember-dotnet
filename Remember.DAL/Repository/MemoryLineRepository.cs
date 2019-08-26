@@ -1,12 +1,18 @@
-﻿using System;
+﻿using DAL.Utils;
+using NHibernate;
+using Remember.DAL.Utils;
+using Remember.Domain.Entity;
+using Remember.Domain.Interface.Repository;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Remember.DAL.Repository
 {
     public class MemoryLineRepository : IMemoryLineRepository
     {
-        MemoryLine Get(Guid id)
+        public MemoryLine Get(Guid id)
         {
             MemoryLine entity;
 
@@ -18,7 +24,7 @@ namespace Remember.DAL.Repository
             return entity;
         }
 
-        MemoryLine Insert(MemoryLine entity)
+        public MemoryLine Insert(MemoryLine entity)
         {
             using (ISession session = SessionFactory.OpenSession())
             using (ITransaction transaction = session.BeginTransaction())
@@ -31,7 +37,7 @@ namespace Remember.DAL.Repository
             return entity;
         }
 
-        MemoryLine Update(MemoryLine entity)
+        public MemoryLine Update(MemoryLine entity)
         {
             using (ISession session = SessionFactory.OpenSession())
             using (ITransaction transaction = session.BeginTransaction())
@@ -44,7 +50,7 @@ namespace Remember.DAL.Repository
             return entity;
         }
 
-        MemoryLine Delete(MemoryLine entity)
+        public MemoryLine Delete(MemoryLine entity)
         {
             using (ISession session = SessionFactory.OpenSession())
             using (ITransaction transaction = session.BeginTransaction())
@@ -57,21 +63,57 @@ namespace Remember.DAL.Repository
             return entity;
         }
 
-        List<MemoryLine> GetByUser(Guid userId)
+        public List<MemoryLine> GetByUser(Guid id)
         {
-            List<MemoryLine> entity;
+            IList<MemoryLine> entity;
 
             using (ISession session = SessionFactory.OpenSession())
             {
+                MemoryLine memoryLineAlias = null;
+                User hostAlias = null;
+                User guestAlias = null;
+
                 //TODO: Validate
-                entity = session.QuerOver<MemoryLine>()
-                    .JoinQueryOver<User>(x => x.Host)
-                    .Where(x => x.Id == userId)
-                    .JoinQueryOver<User>(x => x.Guest)
-                    .Where(x => x.Id == userId)
+                entity = session.QueryOver(() => memoryLineAlias)
+                    .JoinAlias(() => memoryLineAlias.Host, () => hostAlias)
+                    .Left.JoinAlias(() => memoryLineAlias.Guests, () => guestAlias)
+                    .Where(() => hostAlias.Id == id || guestAlias.Id == id)
                     .OrderBy(x => x.CreatedAt)
-                    .Desc()
-                    .ToList();
+                    .Desc
+                    .List();
+            }
+
+            return entity as List<MemoryLine>;
+        }
+
+        public MemoryLine GetRandom()
+        {
+            IList<MemoryLine> entity;
+
+            using (ISession session = SessionFactory.OpenSession())
+            {
+                entity = session.QueryOver<MemoryLine>()
+                    .JoinQueryOver(x => x.Host)
+                    .OrderByRandom()
+                    .List();
+            }
+
+            return entity.FirstOrDefault();
+        }
+
+        public MemoryLine GetMemoryWithGuestList(Guid id)
+        {
+            MemoryLine entity;
+
+            MemoryLine memoryLineAlias = null;
+            User guestAlias = null;
+
+            using (ISession session = SessionFactory.OpenSession())
+            {
+                entity = session.QueryOver(() => memoryLineAlias)
+                    .JoinAlias(() => memoryLineAlias.Guests, () => guestAlias)
+                    .Where(() => memoryLineAlias.Id == id)
+                    .SingleOrDefault();
             }
 
             return entity;

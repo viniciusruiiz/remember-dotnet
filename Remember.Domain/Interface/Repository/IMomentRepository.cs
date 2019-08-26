@@ -13,7 +13,7 @@ namespace Remember.Domain.Interface.Repository
 
         Moment Update(Moment entity);
 
-        Moment Delete(Moment moment);
+        Moment Delete(Moment entity);
 
         List<Moment> GetByMemoryLine(Guid id);
     }

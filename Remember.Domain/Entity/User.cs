@@ -58,7 +58,7 @@ namespace Remember.Domain.Entity
         /// <summary>
         /// Gênero do usuário
         /// </summary>
-        public virtual string Gender { get; set; }
+        public virtual char Gender { get; set; }
 
         /// <summary>
         /// Data de nascimento do usuário

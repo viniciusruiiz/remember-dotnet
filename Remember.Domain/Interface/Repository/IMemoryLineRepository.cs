@@ -15,6 +15,10 @@ namespace Remember.Domain.Interface.Repository
 
         MemoryLine Delete(MemoryLine entity);
 
-        List<MemoryLine> GetByUser(Guid userId);
+        List<MemoryLine> GetByUser(Guid id);
+
+        MemoryLine GetRandom();
+
+        MemoryLine GetMemoryWithGuestList(Guid id);
     }
 }

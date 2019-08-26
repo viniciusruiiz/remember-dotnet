@@ -1,10 +1,11 @@
 ﻿using DAL.Utils;
 using NHibernate;
+using Remember.DAL.Utils;
 using Remember.Domain.Entity;
 using Remember.Domain.Interface.Repository;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace Remember.DAL.Repository
 {
@@ -19,7 +20,7 @@ namespace Remember.DAL.Repository
 
                 session.Update(entity);
 
-                transaction.Dispose();
+                transaction.Commit();
             }
 
             return entity;
@@ -37,19 +38,32 @@ namespace Remember.DAL.Repository
             return entity;
         }
 
-        public User GetRandom()
+        public User GetByEmail(string email)
         {
             User entity;
 
             using (ISession session = SessionFactory.OpenSession())
             {
                 entity = session.QueryOver<User>()
-                    .OrderByRandom()
-                    .Take(1)
+                    .Where(x => x.Email == email)
                     .SingleOrDefault();
             }
 
             return entity;
+        }
+
+        public User GetRandom()
+        {
+            IList<User> entity;
+
+            using (ISession session = SessionFactory.OpenSession())
+            {
+                entity = session.QueryOver<User>()
+                    .OrderByRandom()
+                    .List();
+            }
+
+            return entity.FirstOrDefault();
         }
 
         public User Insert(User entity)
@@ -59,7 +73,7 @@ namespace Remember.DAL.Repository
             {
                 session.Save(entity);
 
-                transaction.Dispose();
+                transaction.Commit();
             }
 
             return entity;
@@ -72,7 +86,7 @@ namespace Remember.DAL.Repository
             {
                 session.Update(entity);
 
-                transaction.Dispose();
+                transaction.Commit();
             }
 
             return entity;

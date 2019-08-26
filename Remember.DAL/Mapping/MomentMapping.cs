@@ -17,8 +17,8 @@ namespace Remember.DAL.Mapping
             Map(m => m.Data).Length(999).Column("MON_FIL");
             Map(m => m.CreatedAt).Column("MON_CAT");
             Map(m => m.UpdatedAt).Column("MOM_UAT");
-            References(m => m.MemoryLine).Column("MOM_MLN");
-            References(m => m.CreatedBy).Column("MOM_USU");
+            References(m => m.MemoryLine).Column("MOM_MLN").Not.Nullable();
+            References(m => m.CreatedBy).Column("MOM_USU").Not.Nullable();
         }
     }
 }
