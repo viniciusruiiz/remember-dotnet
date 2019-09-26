@@ -45,12 +45,25 @@ namespace Remember.DAL.Repository
             using (ISession session = SessionFactory.OpenSession())
             {
                 entity = session.QueryOver<User>()
-                    .OrderByRandom()
-                    .Take(1)
+                    .Where(x => x.Email == email)
                     .SingleOrDefault();
             }
 
             return entity;
+        }
+
+        public User GetRandom()
+        {
+            IList<User> entity;
+
+            using (ISession session = SessionFactory.OpenSession())
+            {
+                entity = session.QueryOver<User>()
+                    .OrderByRandom()
+                    .List();
+            }
+
+            return entity.FirstOrDefault();
         }
 
         public User Insert(User entity)

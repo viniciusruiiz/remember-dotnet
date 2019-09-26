@@ -45,7 +45,7 @@ namespace Remember.Domain.Entity
         /// <summary>
         /// Usuários que foram convidados a participar da memory line
         /// </summary>
-        public virtual List<User> Guests { get; set; }
+        public virtual IList<User> Guests { get; set; }
 
         /// <summary>
         /// Identificador de memory line compartilhada ou privada
