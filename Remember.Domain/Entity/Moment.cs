@@ -1,5 +1,4 @@
-﻿using Remember.Domain.Entity.Base;
-using System;
+﻿using System;
 
 namespace Remember.Domain.Entity
 {

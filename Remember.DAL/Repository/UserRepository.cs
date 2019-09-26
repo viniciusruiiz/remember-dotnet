@@ -1,30 +1,16 @@
 ﻿using DAL.Utils;
 using NHibernate;
+using Remember.DAL.Utils;
 using Remember.Domain.Entity;
 using Remember.Domain.Interface.Repository;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace Remember.DAL.Repository
 {
     public class UserRepository : IUserRepository
     {
-        public User Disable(User entity)
-        {
-            using (ISession session = SessionFactory.OpenSession())
-            using (ITransaction transaction = session.BeginTransaction())
-            {
-                entity.Disable();
-
-                session.Update(entity);
-
-                transaction.Dispose();
-            }
-
-            return entity;
-        }
-
         public User Get(Guid id)
         {
             User entity;
@@ -37,7 +23,22 @@ namespace Remember.DAL.Repository
             return entity;
         }
 
-        public User GetRandom()
+        public Guid GetUserPkByEmail(string email)
+        {
+            Guid user;
+
+            using (ISession session = SessionFactory.OpenSession())
+            {
+                user = session.QueryOver<User>()
+                    .Where(x => x.Email == email)
+                    .SelectList(x => x.Select(y => y.Id))
+                    .SingleOrDefault<Guid>();
+            }
+
+            return user;
+        }
+
+        public User GetRandomUser()
         {
             User entity;
 
@@ -59,7 +60,7 @@ namespace Remember.DAL.Repository
             {
                 session.Save(entity);
 
-                transaction.Dispose();
+                Dispose(transaction);
             }
 
             return entity;
@@ -72,10 +73,46 @@ namespace Remember.DAL.Repository
             {
                 session.Update(entity);
 
-                transaction.Dispose();
+                Dispose(transaction);
             }
 
             return entity;
+        }
+
+        private void Dispose(ITransaction transaction)
+        {
+            transaction.Commit();
+            transaction.Dispose();
+        }
+
+        public User GetUserByEmail(string email)
+        {
+            User user;
+
+            using (ISession session = SessionFactory.OpenSession())
+            {
+                user = session.QueryOver<User>()
+                    .Where(x => x.Email == email)
+                    .SingleOrDefault();
+            }
+
+            return user;
+        }
+
+        public IList<User> GetByMemoryLine(Guid memoryLineId)
+        {
+            IList<User> users;
+
+            using (ISession session = SessionFactory.OpenSession())
+            {
+                users = session.QueryOver<MemoryLine>()
+                    .Where(x => x.Id == memoryLineId)
+                    .Inner.JoinQueryOver(x => x.Guests)
+                    .SingleOrDefault()
+                    .Guests;
+            }
+
+            return users;
         }
     }
 }

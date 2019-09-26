@@ -11,7 +11,7 @@ namespace Remember.DAL.Utils
         public override SqlString ToSqlString(
             ICriteria criteria, ICriteriaQuery criteriaQuery)
         {
-            return new SqlString("RAND()");
+            return new SqlString("NEWID()");
         }
     }
 }

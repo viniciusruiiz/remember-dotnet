@@ -1,4 +1,4 @@
-﻿using Remember.Domain.Entity.Base;
+﻿using Remember.Domain.Enum;
 using System;
 
 namespace Remember.Domain.Entity
@@ -13,22 +13,7 @@ namespace Remember.Domain.Entity
         /// </summary>
         public User()
         {
-            IsActive = true;
-        }
 
-        /// <summary>
-        /// Construtor da classe usuário
-        /// com parâmetros relacionados a login
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="email"></param>
-        /// <param name="password"></param>
-        public User(Guid id, string email, string password)
-        {
-            Id = id;
-            Email = email;
-            Password = password;
-            IsActive = true;
         }
 
         #endregion
@@ -38,17 +23,22 @@ namespace Remember.Domain.Entity
         /// <summary>
         /// Identificador do usuário
         /// </summary>
-        public virtual Guid Id { get; protected set; }
+        public virtual Guid Id { get; set; }
 
         /// <summary>
         /// Email do usuário
         /// </summary>
-        public virtual string Email { get; protected set; }
+        public virtual string Email { get; set; }
 
         /// <summary>
-        /// Senha do usuário
+        /// Identificador randômico de encriptografia de senha
         /// </summary>
-        public virtual string Password { get; protected set; }
+        public virtual byte[] PasswordSalt { get; set; }
+
+        /// <summary>
+        /// Senha encriptografada
+        /// </summary>
+        public virtual byte[] PasswordHash { get; set; }
 
         /// <summary>
         /// Nome do usuário
@@ -58,7 +48,7 @@ namespace Remember.Domain.Entity
         /// <summary>
         /// Gênero do usuário
         /// </summary>
-        public virtual string Gender { get; set; }
+        public virtual char Gender { get; set; }
 
         /// <summary>
         /// Data de nascimento do usuário
@@ -68,7 +58,7 @@ namespace Remember.Domain.Entity
         /// <summary>
         /// Identificador de usuário ativado ou desativado
         /// </summary>
-        public virtual bool IsActive { get; protected set; }
+        public virtual UserSituation UserSituation { get; set; }
 
         /// <summary>
         /// Data de criação do usuário
@@ -83,12 +73,20 @@ namespace Remember.Domain.Entity
         #endregion
 
         #region .: Methods :.
-
-        public virtual void Disable()
+        public virtual void RequestEmailConfirmation()
         {
-            IsActive = false;
+            UserSituation = UserSituation.ConfirmEmailPending;
         }
 
+        public virtual void Active()
+        {
+            UserSituation = UserSituation.ConfirmEmailPending;
+        }
+
+        public virtual void Desactive()
+        {
+            UserSituation = UserSituation.ConfirmEmailPending;
+        }
         #endregion
     }
 }

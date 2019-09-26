@@ -1,7 +1,6 @@
 ﻿using Remember.Domain.Entity;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Remember.Domain.Interface.Repository
 {
@@ -9,12 +8,16 @@ namespace Remember.Domain.Interface.Repository
     {
         User Get(Guid id);
 
+        Guid GetUserPkByEmail(string email);
+
         User Insert(User entity);
 
         User Update(User entity);
 
-        User Disable(User entity);
+        User GetRandomUser();
 
-        User GetRandom();
+        User GetUserByEmail(string email);
+
+        IList<User> GetByMemoryLine(Guid memoryLineId);
     }
 }

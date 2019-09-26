@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Remember.Domain.Entity.Base
+namespace Remember.Domain.Entity
 {
     public interface ITimeStampable
     {

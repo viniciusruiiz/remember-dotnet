@@ -1,6 +1,6 @@
 ﻿using NHibernate.Event;
 using NHibernate.Persister.Entity;
-using Remember.Domain.Entity.Base;
+using Remember.Domain.Entity;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,7 +27,6 @@ namespace Remember.DAL.Utils
         {
             if (!(@event.Entity is ITimeStampable audit))
                 return false;
-
 
             var time = DateTime.Now;
 

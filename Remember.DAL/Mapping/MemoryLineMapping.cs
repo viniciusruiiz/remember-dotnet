@@ -15,7 +15,7 @@ namespace Remember.DAL.Mapping
             Map(m => m.CreatedAt).Column("MLN_CAT");
             Map(m => m.UpdatedAt).Column("MLN_UAT");
             References(m => m.Host).Column("MLN_HST");
-            HasMany(m => m.Guests).Table("TBL_MLN_USU");
+            HasManyToMany(m => m.Guests).Table("TBL_MLN_USU").Cascade.All();
         }
     }
 }

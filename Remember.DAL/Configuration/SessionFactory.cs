@@ -33,7 +33,7 @@ namespace DAL.Utils
                     .ShowSql()
                     .FormatSql())
                 .Mappings(x => x.FluentMappings.AddFromAssembly(Assembly.GetExecutingAssembly()))
-                .ExposeConfiguration(cfg => new SchemaUpdate(cfg).Execute(false, true)) //NOT WORKING
+                .ExposeConfiguration(cfg => new SchemaUpdate(cfg).Execute(false, true))
                 .ExposeConfiguration(c => c.AppendListeners(ListenerType.PreInsert, new IPreInsertEventListener[] { new AuditEventListener() }))
                 .ExposeConfiguration(c => c.AppendListeners(ListenerType.PreUpdate, new IPreUpdateEventListener[] { new AuditEventListener() }))
                 .BuildSessionFactory();

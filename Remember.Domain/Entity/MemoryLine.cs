@@ -1,5 +1,4 @@
-﻿using Remember.Domain.Entity.Base;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Remember.Domain.Entity
@@ -31,7 +30,7 @@ namespace Remember.Domain.Entity
         /// <summary>
         /// Identificador da memory line
         /// </summary>
-        public virtual Guid Id { get; protected set; }
+        public virtual Guid Id { get; set; }
 
         /// <summary>
         /// Nome da memory line
